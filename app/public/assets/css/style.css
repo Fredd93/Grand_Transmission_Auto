@@ -1,1 +1,308 @@
-/* Add custom styles here */
+:root {
+  /* Brand Colors */
+  --color-primary: #1F1F1F;  /* Dark Gray */
+  --color-accent: #1E5FA4;   /* Blue Accent */
+  --color-bg: #F7F7F7;       /* Light Background */
+  --color-white: #FFFFFF;
+
+  /* Typography */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+/* Global Resets & Basics */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  padding-top: 60px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+}
+
+/* CUSTOM NAVBAR */
+.custom-navbar {
+  background-color: var(--color-primary) !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  height: 80px; /* fixed navbar height */
+  padding: 0 2rem;
+}
+.navbar .btn.btn-primary {
+  padding: 0.75rem 1.75rem;
+  min-width: 120px; /* adjust as needed */
+}
+/* Reserve space for the logo */
+.navbar-brand {
+  position: relative;
+  padding-left: 175px; /* Adjust based on the logo width (80px) plus some spacing */
+  display: flex;
+  align-items: center;
+}
+
+/* Position the logo within the brand container */
+.navbar-brand img {
+  position: absolute;
+  left: 0;
+  height: 175px !important; /* Set the desired logo size */
+  width: 175px !important;   /* Ensure it's square */
+  object-fit: contain;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.nav-item.active .nav-link {
+  color: var(--color-accent) !important;
+  /* Optionally add an underline or border for extra emphasis */
+  border-bottom: 2px solid var(--color-accent);
+}
+
+/* Container to center and limit width */
+.gt-container {
+  max-width: 1200px;  /* adjust as desired */
+  margin: 0 auto;
+  padding: 0 1rem;
+  padding-top: 4rem;
+}
+.gt-container h2 {
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+}
+
+
+/* A responsive grid layout for cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+  background: url('../images/Hero.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;       /* vertically center */
+  justify-content: flex-start; /* align items to the left */
+  padding-left: 2rem;  
+}
+.heroCars {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+  background: url('../images/CarPageBanner.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;       /* vertically center */
+  justify-content: flex-start; /* align items to the left */
+  padding-left: 2rem;  
+}
+.hero-overlay {
+
+  padding: 2rem;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 3rem;
+  color: var(--color-white);
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 2.5rem;
+  color: var(--color-white);
+}
+.hero-overlay h1,
+.hero-overlay p {
+  color: #fff; /* your fill color */
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+/* Cards */
+.card {
+  background-color: var(--color-white);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 1rem;
+  overflow: hidden;
+}
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.card-body {
+  padding: 1rem;
+}
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.card-text {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+.btn-primary:hover {
+  background-color: #174873;
+}
+.btn-success {
+  background-color: #2c9f45;
+  color: var(--color-white);
+}
+.btn-success:hover {
+  background-color: #237536;
+}
+.btn-outline-accent {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover state inverts the colors for clarity */
+.btn-outline-accent:hover {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+
+/* Hover effect for cards */
+.card-hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* Login Page Styles */
+.login-container {
+  max-width: 400px;
+  margin: 5rem auto;  /* centers horizontally and adds vertical margin */
+  padding: 2rem;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-accent);
+}
+
+.login-container .form-control {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.login-container .btn {
+  font-size: 1rem;
+  padding: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Modern styles for the filter panel elements */
+.filter-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  background-color: var(--color-white);
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+
+.filter-panel select,
+.filter-panel input[type="number"] {
+  background-color: var(--color-white);
+  border: 1px solid #ccc;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  color: var(--color-primary);
+  min-width: 150px;
+  transition: border-color 0.2s ease;
+}
+
+.filter-panel select:focus,
+.filter-panel input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.filter-panel button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.filter-panel button:hover {
+  background-color: #174873;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+}
