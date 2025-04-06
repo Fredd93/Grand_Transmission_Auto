@@ -59,6 +59,10 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
 
 <!-- Add Car Modal Partial -->
 <?php include __DIR__ . '/../partials/addCarModal.php'; ?>
+<!-- edit bitch -->
+
+<?php include __DIR__ . '/../partials/editCarModal.php'; ?>
+
 
 <!-- Footer -->
 <?php include __DIR__ . '/../partials/footer.php'; ?>

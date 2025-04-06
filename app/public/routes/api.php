@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../api/OrderApiController.php';
+require_once __DIR__ . '/../api/CarApiController.php';
+
 
 // AUTH ROUTES
 Route::add('/api/login', function () {
@@ -34,7 +36,27 @@ require_once __DIR__ . '/../api/CarApiController.php';
 
 Route::add('/api/cars', function () {
     (new CarApiController())->getAllCars();
-}, 'GET');
+});
+
+Route::add('/api/cars/featured', function () {
+    (new CarApiController())->getFeaturedCars();
+});
+
+Route::add('/api/cars/new', function () {
+    (new CarApiController())->getNewArrivals();
+});
+
+Route::add('/api/cars/deals', function () {
+    (new CarApiController())->getDealsOfDay();
+});
+
+Route::add('/api/cars/filters', function () {
+    (new CarApiController())->getFilterOptions();
+});
+
+Route::add('/api/cars/filter', function () {
+    (new CarApiController())->getFilteredCars();
+});
 
 Route::add('/api/cars', function () {
     (new CarApiController())->insertCar();
@@ -42,7 +64,17 @@ Route::add('/api/cars', function () {
 
 Route::add('/api/cars/([0-9]+)', function ($id) {
     (new CarApiController())->getCarById($id);
-}, 'GET');
+});
+Route::add('/api/cars/edit', function () {
+    $controller = new CarApiController();
+    $controller->updateCarDetails();
+});
+
+Route::add('/api/orders/create', function () {
+    $controller = new OrderApiController();
+    $controller->createOrder();
+}, 'post');
+
 
 Route::add('/api/cars/featured', function () {
     (new CarApiController())->getFeaturedCars();

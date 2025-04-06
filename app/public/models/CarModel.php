@@ -179,29 +179,28 @@ class CarModel extends BaseModel
 
         return $row ? $row : null;
     }
-    // Update a car by ID
-    public function updateCar($id, $data)
+    
+    public function editCarDetails($carId, $data)
     {
-        $sql = "UPDATE cars SET
-            brand = :brand,
-            model = :model,
-            year = :year,
-            transmission = :transmission,
-            engine_spec = :engine_spec,
-            car_condition = :car_condition,
-            description = :description,
-            color = :color,
-            price = :price,
-            on_sale = :on_sale,
-            discount = :discount,
-            lease_available = :lease_available,
-            lease_terms = :lease_terms,
-            status = :status,
-            image_path = :image_path
-        WHERE car_id = :id";
+        $sql = "UPDATE cars SET 
+                    brand = :brand,
+                    model = :model,
+                    year = :year,
+                    transmission = :transmission,
+                    engine_spec = :engine_spec,
+                    car_condition = :car_condition,
+                    description = :description,
+                    color = :color,
+                    price = :price,
+                    on_sale = :on_sale,
+                    discount = :discount,
+                    lease_available = :lease_available,
+                    lease_terms = :lease_terms,
+                    status = :status,
+                    image_path = :image_path
+                WHERE car_id = :car_id";
 
         $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':brand', $data['brand']);
         $stmt->bindParam(':model', $data['model']);
         $stmt->bindParam(':year', $data['year']);
@@ -217,16 +216,8 @@ class CarModel extends BaseModel
         $stmt->bindParam(':lease_terms', $data['lease_terms']);
         $stmt->bindParam(':status', $data['status']);
         $stmt->bindParam(':image_path', $data['image_path']);
-        
-        return $stmt->execute();
-    }
+        $stmt->bindParam(':car_id', $carId);
 
-    // Delete a car by ID
-    public function deleteCar($id)
-    {
-        $sql = "DELETE FROM cars WHERE car_id = :id";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
