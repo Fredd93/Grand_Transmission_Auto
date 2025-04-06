@@ -65,10 +65,6 @@ Route::add('/api/cars', function () {
 Route::add('/api/cars/([0-9]+)', function ($id) {
     (new CarApiController())->getCarById($id);
 });
-Route::add('/api/cars/edit', function () {
-    $controller = new CarApiController();
-    $controller->updateCarDetails();
-});
 
 Route::add('/api/orders/create', function () {
     $controller = new OrderApiController();
