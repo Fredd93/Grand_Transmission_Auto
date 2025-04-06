@@ -26,6 +26,12 @@ Route::add('/cars', function () {
     $activePage = 'cars';
     require __DIR__ . '/../views/pages/cars.php';
 });
+// Route for cars page
+Route::add('/car_details', function () {
+    $activePage = 'details';
+    include __DIR__ . '/../views/cars/details.php';
+
+});
 Route::add('/order', function () {
 
     // Check if the user is logged in and has the "employee" role
@@ -38,6 +44,12 @@ Route::add('/order', function () {
     $activePage = 'orders';
     require __DIR__ . '/../views/pages/orders.php';
 });
+
+Route::add('/car/([0-9]+)', function ($id) {
+    $_GET['car_id'] = $id;
+    include __DIR__ . '/../views/pages/carDetails.php';
+});
+
 
 
 // Additional page routes can be added here...

@@ -1,8 +1,5 @@
 <?php
-// app/controllers/CarController.php
-
 require_once __DIR__ . '/../models/CarModel.php';
-require_once __DIR__ . '/../dto/CarDTO.php';
 
 class CarController
 {
@@ -13,63 +10,22 @@ class CarController
         $this->carModel = new CarModel();
     }
 
-    public function getAllCars()
+    public function showDetailsPage($id)
     {
-        return $this->carModel->getAllCars();
-    }
+        if (!is_numeric($id)) {
+            echo "Invalid car ID.";
+            return;
+        }
 
-    public function getFeaturedCars()
-    {
-        return $this->carModel->getFeaturedCars();
-    }
+        $car = $this->carModel->getCarById($id);
 
-    public function getNewArrivals()
-    {
-        return $this->carModel->getNewArrivals();
-    }
+        if (!$car) {
+            echo "Car not found.";
+            return;
+        }
 
-    public function getDealsOfDay()
-    {
-        return $this->carModel->getDealsOfDay();
-    }
+        $carData = $car;
 
-    public function getDistinctBrands()
-    {
-        return $this->carModel->getDistinctBrands();
-    }
-
-    public function getDistinctYears()
-    {
-        return $this->carModel->getDistinctYears();
-    }
-
-    public function getDistinctTransmissions()
-    {
-        return $this->carModel->getDistinctTransmissions();
-    }
-
-    public function getDistinctOnSaleValues()
-    {
-        return $this->carModel->getDistinctOnSaleValues();
-    }
-
-    public function getPriceBounds()
-    {
-        return $this->carModel->getPriceBounds();
-    }
-
-    public function getFilteredCars($filters)
-    {
-        return $this->carModel->getFilteredCars($filters);
-    }
-
-    public function insertCar($data)
-    {
-        return $this->carModel->insertCar($data);
-    }
-
-    public function getCarById($id)
-    {
-        return $this->carModel->getCarById($id);
+        include __DIR__ . '/../views/cars/carDetails.php';
     }
 }
