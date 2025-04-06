@@ -1,5 +1,5 @@
 <?php
-// app/public/routes/api.php
+require_once __DIR__ . '/../api/OrderApiController.php';
 
 // Route for API login endpoint
 Route::add('/api/login', function () {
@@ -14,4 +14,19 @@ Route::add('/api/get_cars', function () {
 Route::add('/api/add_car', function () {
     require __DIR__ . '/../../api/add_car.php';
 });
+
+Route::add('/api/orders', function () {
+    $controller = new OrderApiController();
+    $controller->getAllOrders();
+}, 'GET');
+
+Route::add('/api/orders/status', function () {
+    $controller = new OrderApiController();
+    $controller->updateOrderStatus();
+}, 'PUT');
+
+Route::add('/api/orders/([0-9]+)', function ($orderId) {
+    $controller = new OrderApiController();
+    $controller->getOrderById($orderId);
+}, 'GET');
 ?>

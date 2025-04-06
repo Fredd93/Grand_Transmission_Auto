@@ -19,6 +19,9 @@ services:
       DB_USER: developer
       DB_PASSWORD: secret123
       DB_CHARSET: utf8mb4
+    depends_on:
+      - mysql
+      - mailhog 
 
   mysql:
     image: mariadb:latest
@@ -38,6 +41,12 @@ services:
       - "8080:80"
     environment:
       - PMA_HOST=mysql
+
+  mailhog: 
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025" 
+      - "1025:1025"  
 
 volumes:
   mysqldata: {}

@@ -27,7 +27,7 @@ if (!isset($activePage)) {
         <?php
         if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee', 'manager'])) {
             echo '<li class="nav-item ' . (($activePage=='offers') ? 'active' : '') . '">
-                    <a class="nav-link" href="/offers.php">Offers</a>
+                    <a class="nav-link" href="/order">Orders</a>
                   </li>';
         }
         ?>
