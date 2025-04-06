@@ -21,13 +21,10 @@ if (!isset($activePage)) {
         <li class="nav-item <?php echo ($activePage == 'cars') ? 'active' : ''; ?>">
           <a class="nav-link" href="/cars">Cars</a>
         </li>
-        <li class="nav-item <?php echo ($activePage == 'contact') ? 'active' : ''; ?>">
-          <a class="nav-link" href="/contact.php">Contact Us</a>
-        </li>
         <?php
         if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee', 'manager'])) {
             echo '<li class="nav-item ' . (($activePage=='orders') ? 'active' : '') . '">
-                    <a class="nav-link" href="/offers.php">Offers</a>
+                    <a class="nav-link" href="/order">Orders</a>
                   </li>';
         }
         ?>

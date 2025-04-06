@@ -38,6 +38,10 @@ Route::add('/order', function () {
     $activePage = 'orders';
     require __DIR__ . '/../views/pages/orders.php';
 });
+Route::add('/order/create/([0-9]+)', function ($carId) {
+    $_GET['id'] = $carId; // simulate GET param for createOrder.php
+    require_once __DIR__ . '/../views/pages/createOrder.php';
+});
 
 
 // Additional page routes can be added here...

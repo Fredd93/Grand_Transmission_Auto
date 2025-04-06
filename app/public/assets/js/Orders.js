@@ -16,7 +16,11 @@ function fetchOrders() {
                 card.innerHTML = `
                     <div class="card p-3">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">Order #${order.order_id}</h5>
+                            <h5 class="card-title mb-1">Order #${order.order_id}</h5>
+                            <p class="text-muted mb-2">
+                              <strong>Car:</strong> ${order.car_brand} ${order.car_model}
+                            </p>
+
                             <p class="card-text">
                                 <strong>Client:</strong> ${order.client_name}<br>
                                 <strong>Email:</strong> ${order.client_email}<br>

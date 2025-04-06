@@ -11,13 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
   if (addCarBtn && addCarModalEl && addCarForm) {
     const addCarModal = new bootstrap.Modal(addCarModalEl);
 
-    // Show modal and reset form
     addCarBtn.addEventListener('click', function () {
       addCarForm.reset();
       addCarModal.show();
     });
 
-    // Clean up modal backdrop on close
     addCarModalEl.addEventListener('hidden.bs.modal', () => {
       addCarForm.reset();
       removeModalBackdrop();
@@ -34,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      fetch('/api/add_car.php', {
+      // ✅ FIXED ENDPOINT HERE
+      fetch('/api/cars', {
         method: 'POST',
         body: formData
       })
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if (contentType && contentType.includes("application/json")) {
             const data = await response.json();
-            if (data.success) {
+            if (data.success || data.message?.includes('successfully')) {
               alert('Car added successfully!');
               addCarModal.hide();
               setTimeout(() => {
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 location.reload();
               }, 200);
             } else {
-              alert('Error: ' + data.message);
+              alert('Error: ' + (data.message || 'Unknown error'));
             }
           } else {
             const errorText = await response.text();

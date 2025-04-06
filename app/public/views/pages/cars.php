@@ -92,6 +92,10 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
 
 <!-- Include the Add Car Modal -->
 <?php include __DIR__ . '/../partials/addCarModal.php'; ?>
+<!-- edit bitch -->
+
+<?php include __DIR__ . '/../partials/editCarModal.php'; ?>
+
 
 <?php
 // Include the footer partial (which closes the <body> and </html> tags)

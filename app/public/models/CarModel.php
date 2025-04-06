@@ -218,5 +218,46 @@ class CarModel extends BaseModel
 
         return $row ? $row : null;
     }
+    
+    public function editCarDetails($carId, $data)
+    {
+        $sql = "UPDATE cars SET 
+                    brand = :brand,
+                    model = :model,
+                    year = :year,
+                    transmission = :transmission,
+                    engine_spec = :engine_spec,
+                    car_condition = :car_condition,
+                    description = :description,
+                    color = :color,
+                    price = :price,
+                    on_sale = :on_sale,
+                    discount = :discount,
+                    lease_available = :lease_available,
+                    lease_terms = :lease_terms,
+                    status = :status,
+                    image_path = :image_path
+                WHERE car_id = :car_id";
+
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':brand', $data['brand']);
+        $stmt->bindParam(':model', $data['model']);
+        $stmt->bindParam(':year', $data['year']);
+        $stmt->bindParam(':transmission', $data['transmission']);
+        $stmt->bindParam(':engine_spec', $data['engine_spec']);
+        $stmt->bindParam(':car_condition', $data['car_condition']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':color', $data['color']);
+        $stmt->bindParam(':price', $data['price']);
+        $stmt->bindParam(':on_sale', $data['on_sale']);
+        $stmt->bindParam(':discount', $data['discount']);
+        $stmt->bindParam(':lease_available', $data['lease_available']);
+        $stmt->bindParam(':lease_terms', $data['lease_terms']);
+        $stmt->bindParam(':status', $data['status']);
+        $stmt->bindParam(':image_path', $data['image_path']);
+        $stmt->bindParam(':car_id', $carId);
+
+        return $stmt->execute();
+    }
 
 }
