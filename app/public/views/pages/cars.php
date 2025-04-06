@@ -9,7 +9,7 @@ $carModel = new CarModel();
 // Initially load all cars (before filtering)
 $cars = $carModel->getAllCars();
 
-// Include header partial (it includes the <head> and starts the <body>)
+// Include header partial (it includes <html>, <head>, and starts <body>)
 include __DIR__ . '/../partials/header.php';
 
 // Check if an employee (or manager) is logged in
@@ -52,7 +52,7 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
       <?php foreach ($cars as $car): ?>
         <div class="card" data-car-id="<?php echo $car->getCarId(); ?>">
           <?php if ($isEmployee): ?>
-            <!-- Three-dot menu for Edit / Remove -->
+            <!-- Three-dot options menu for Edit / Remove -->
             <div class="card-options" style="position: absolute; top: 0.5rem; right: 0.5rem;">
               <button class="options-btn btn btn-link" onclick="toggleOptionsMenu(event, <?php echo $car->getCarId(); ?>)">
                 &#x22EE;
@@ -90,6 +90,9 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
   </section>
 </div>
 
+<!-- Include the Add Car Modal from partial -->
+<?php include __DIR__ . '/../partials/addCarModal.php'; ?>
+
 <?php
 // Include the footer partial (which closes the <body> and </html> tags)
 include __DIR__ . '/../partials/footer.php';
@@ -97,8 +100,8 @@ include __DIR__ . '/../partials/footer.php';
 
 <!-- Include the dedicated car filtering JavaScript -->
 <script src="/assets/js/carFilter.js"></script>
+<!-- Include the add car functionality JavaScript -->
 <script src="/assets/js/addCar.js"></script>
-
 
 <!-- Inline JavaScript for handling employee actions -->
 <script>
@@ -125,9 +128,9 @@ include __DIR__ . '/../partials/footer.php';
     if (e.target.matches('.edit-car')) {
       e.preventDefault();
       const carId = e.target.getAttribute('data-car-id');
-      // Trigger your edit logic (for example, open an edit modal)
+      // Trigger your edit logic (e.g., open an edit modal)
       console.log("Edit car", carId);
-      // TODO: Implement edit functionality (e.g., open modal with a form pre-filled with car data)
+      // TODO: Implement edit functionality
     } else if (e.target.matches('.delete-car')) {
       e.preventDefault();
       const carId = e.target.getAttribute('data-car-id');
@@ -148,13 +151,4 @@ include __DIR__ . '/../partials/footer.php';
       }
     }
   });
-
-  // Handle "Add Car" button click (if present)
-  <?php if ($isEmployee): ?>
-    document.getElementById('addCarBtn').addEventListener('click', function() {
-      // Trigger your add car logic (for example, open an add car modal)
-      console.log("Add new car");
-      // TODO: Implement add car functionality (e.g., open modal with blank form)
-    });
-  <?php endif; ?>
 </script>
