@@ -6,7 +6,6 @@ class CarModel extends BaseModel
 {
     public function __construct()
     {
-        // Call BaseModel constructor to initialize the PDO connection.
         parent::__construct();
     }
 
@@ -31,7 +30,6 @@ class CarModel extends BaseModel
         return $results;
     }
 
-    // Fetches 5 random cars as featured cars
     public function getFeaturedCars()
     {
         $sql = "SELECT * FROM cars ORDER BY RAND() LIMIT 5";
@@ -52,8 +50,7 @@ class CarModel extends BaseModel
         return $results;
     }
 
-    // Fetches the 5 most recent cars based on the created_at attribute
-        public function getNewArrivals()
+    public function getNewArrivals()
     {
         $sql = "SELECT * FROM cars WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY created_at DESC LIMIT 5";
         $stmt = self::$pdo->prepare($sql);
@@ -73,8 +70,6 @@ class CarModel extends BaseModel
         return $results;
     }
 
-
-    // Fetches all cars that are on sale
     public function getDealsOfDay()
     {
         $sql = "SELECT * FROM cars WHERE on_sale = 'yes'";
@@ -94,114 +89,134 @@ class CarModel extends BaseModel
         }
         return $results;
     }
-    // In CarModel.php
 
-public function getDistinctBrands()
-{
-    $sql = "SELECT DISTINCT brand FROM cars ORDER BY brand ASC";
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_COLUMN); 
-    // returns an array of brand strings
-}
-
-public function getDistinctYears()
-{
-    $sql = "SELECT DISTINCT year FROM cars ORDER BY year DESC";
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_COLUMN);
-}
-
-public function getDistinctTransmissions()
-{
-    $sql = "SELECT DISTINCT transmission FROM cars ORDER BY transmission ASC";
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_COLUMN);
-}
-
-// Optionally, get on_sale distinct values (if it's just 'yes' or 'no', you could hardcode)
-public function getDistinctOnSaleValues()
-{
-    $sql = "SELECT DISTINCT on_sale FROM cars ORDER BY on_sale ASC";
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_COLUMN);
-}
-
-public function getPriceBounds()
-{
-    $sql = "SELECT MIN(price) as min_price, MAX(price) as max_price FROM cars";
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC); // e.g. ['min_price' => 1000, 'max_price' => 50000]
-}
-
-public function getFilteredCars($filters)
-{
-    // $filters is an associative array, e.g.:
-    // [
-    //   'brand' => 'Toyota',
-    //   'year' => 2020,
-    //   'transmission' => 'automatic',
-    //   'on_sale' => 'yes',
-    //   'price_min' => 10000,
-    //   'price_max' => 30000
-    // ]
-
-    // Start building the query
-    $sql = "SELECT * FROM cars WHERE 1=1";
-    $params = [];
-
-    // Conditionally add filters
-    if (!empty($filters['brand'])) {
-        $sql .= " AND brand = :brand";
-        $params[':brand'] = $filters['brand'];
+    public function getDistinctBrands()
+    {
+        $sql = "SELECT DISTINCT brand FROM cars ORDER BY brand ASC";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    if (!empty($filters['year'])) {
-        $sql .= " AND year = :year";
-        $params[':year'] = $filters['year'];
+    public function getDistinctYears()
+    {
+        $sql = "SELECT DISTINCT year FROM cars ORDER BY year DESC";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    if (!empty($filters['transmission'])) {
-        $sql .= " AND transmission = :transmission";
-        $params[':transmission'] = $filters['transmission'];
+    public function getDistinctTransmissions()
+    {
+        $sql = "SELECT DISTINCT transmission FROM cars ORDER BY transmission ASC";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    if (!empty($filters['on_sale'])) {
-        $sql .= " AND on_sale = :on_sale";
-        $params[':on_sale'] = $filters['on_sale'];
+    public function getDistinctOnSaleValues()
+    {
+        $sql = "SELECT DISTINCT on_sale FROM cars ORDER BY on_sale ASC";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    // Price range
-    if (!empty($filters['price_min'])) {
-        $sql .= " AND price >= :price_min";
-        $params[':price_min'] = $filters['price_min'];
+    public function getPriceBounds()
+    {
+        $sql = "SELECT MIN(price) as min_price, MAX(price) as max_price FROM cars";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    if (!empty($filters['price_max'])) {
-        $sql .= " AND price <= :price_max";
-        $params[':price_max'] = $filters['price_max'];
+    public function getFilteredCars($filters)
+    {
+        $sql = "SELECT * FROM cars WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['brand'])) {
+            $sql .= " AND brand = :brand";
+            $params[':brand'] = $filters['brand'];
+        }
+        if (!empty($filters['year'])) {
+            $sql .= " AND year = :year";
+            $params[':year'] = $filters['year'];
+        }
+        if (!empty($filters['transmission'])) {
+            $sql .= " AND transmission = :transmission";
+            $params[':transmission'] = $filters['transmission'];
+        }
+        if (!empty($filters['on_sale'])) {
+            $sql .= " AND on_sale = :on_sale";
+            $params[':on_sale'] = $filters['on_sale'];
+        }
+        if (!empty($filters['price_min'])) {
+            $sql .= " AND price >= :price_min";
+            $params[':price_min'] = $filters['price_min'];
+        }
+        if (!empty($filters['price_max'])) {
+            $sql .= " AND price <= :price_max";
+            $params[':price_max'] = $filters['price_max'];
+        }
+
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute($params);
+
+        $results = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $results[] = new CarDTO(
+                $row['car_id'],
+                $row['brand'],
+                $row['model'],
+                $row['price'],
+                $row['on_sale'],
+                $row['discount'],
+                $row['image_path']
+            );
+        }
+        return $results;
     }
 
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->execute($params);
+    public function insertCar($data)
+    {
+        $sql = "INSERT INTO cars (
+            brand, model, year, transmission, engine_spec, car_condition, description, color,
+            price, on_sale, discount, lease_available, lease_terms, status, image_path
+        ) VALUES (
+            :brand, :model, :year, :transmission, :engine_spec, :car_condition, :description, :color,
+            :price, :on_sale, :discount, :lease_available, :lease_terms, :status, :image_path
+        )";
 
-    $results = [];
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $results[] = new CarDTO(
-            $row['car_id'],
-            $row['brand'],
-            $row['model'],
-            $row['price'],
-            $row['on_sale'],
-            $row['discount'],
-            $row['image_path']
-        );
-        // Add additional fields if needed (e.g. year, transmission, etc.)
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':brand', $data['brand']);
+        $stmt->bindParam(':model', $data['model']);
+        $stmt->bindParam(':year', $data['year']);
+        $stmt->bindParam(':transmission', $data['transmission']);
+        $stmt->bindParam(':engine_spec', $data['engine_spec']);
+        $stmt->bindParam(':car_condition', $data['car_condition']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':color', $data['color']);
+        $stmt->bindParam(':price', $data['price']);
+        $stmt->bindParam(':on_sale', $data['on_sale']);
+        $stmt->bindParam(':discount', $data['discount']);
+        $stmt->bindParam(':lease_available', $data['lease_available']);
+        $stmt->bindParam(':lease_terms', $data['lease_terms']);
+        $stmt->bindParam(':status', $data['status']);
+        $stmt->bindParam(':image_path', $data['image_path']);
+        $stmt->execute();
+
+        return true;
     }
-    return $results;
-}
+    public function getCarById($id)
+    {
+        $sql = "SELECT * FROM cars WHERE car_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? $row : null;
+    }
+
 }

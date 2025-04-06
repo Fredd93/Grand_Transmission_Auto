@@ -3,12 +3,12 @@
 
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../models/CarModel.php';
+require_once __DIR__ . '/../controllers/CarController.php';
 
-$carModel = new CarModel();
+$controller = new CarController();
 
-// Check required POST fields (adjust these names to match your table)
-$required = ['brand', 'model', 'price', 'on_sale', 'discount', 'image_path'];
+// Validate required fields (excluding image)
+$required = ['brand', 'model', 'year', 'transmission', 'price', 'on_sale', 'discount', 'status'];
 foreach ($required as $field) {
     if (empty($_POST[$field])) {
         echo json_encode(['success' => false, 'message' => "Field '$field' is required."]);
@@ -16,30 +16,52 @@ foreach ($required as $field) {
     }
 }
 
-$brand      = $_POST['brand'];
-$model      = $_POST['model'];
-$price      = $_POST['price'];
-$on_sale    = $_POST['on_sale'];
-$discount   = $_POST['discount'];
-$image_path = $_POST['image_path'];
+// Check image upload
+if (!isset($_FILES['image_path']) || $_FILES['image_path']['error'] !== UPLOAD_ERR_OK) {
+    echo json_encode(['success' => false, 'message' => "An image file is required."]);
+    exit;
+}
+
+// Handle image upload
+$uploadDir = __DIR__ . '/../../assets/images/';
+$uploadedFile = $_FILES['image_path'];
+$filename = uniqid() . '_' . basename($uploadedFile['name']);
+$targetFile = $uploadDir . $filename;
+
+if (!move_uploaded_file($uploadedFile['tmp_name'], $targetFile)) {
+    echo json_encode(['success' => false, 'message' => "Failed to move uploaded file."]);
+    exit;
+}
+
+// Set image path to be stored in the database
+$image_path = "../../assets/images/" . $filename;
+
+// Gather and sanitize form data
+$data = [
+    'brand'            => $_POST['brand'],
+    'model'            => $_POST['model'],
+    'year'             => $_POST['year'],
+    'transmission'     => $_POST['transmission'],
+    'engine_spec'      => $_POST['engine_spec'] ?? null,
+    'car_condition'    => $_POST['car_condition'] ?? null,
+    'description'      => $_POST['description'] ?? null,
+    'color'            => $_POST['color'] ?? null,
+    'price'            => $_POST['price'],
+    'on_sale'          => $_POST['on_sale'],
+    'discount'         => $_POST['discount'],
+    'lease_available'  => $_POST['lease_available'] ?? 'no',
+    'lease_terms'      => $_POST['lease_terms'] ?? null,
+    'status'           => $_POST['status'],
+    'image_path'       => $image_path
+];
+
+// Normalize lease_available
+$data['lease_available'] = strtolower(trim($data['lease_available'])) === 'yes' ? 1 : 0;
 
 try {
-    // Build an insert query. Adjust the table and columns if needed.
-    $sql = "INSERT INTO cars (brand, model, price, on_sale, discount, image_path) 
-            VALUES (:brand, :model, :price, :on_sale, :discount, :image_path)";
-    // Use the getter method to access the PDO connection.
-    $stmt = $carModel->getPDO()->prepare($sql);
-    $stmt->bindParam(':brand', $brand);
-    $stmt->bindParam(':model', $model);
-    $stmt->bindParam(':price', $price);
-    $stmt->bindParam(':on_sale', $on_sale);
-    $stmt->bindParam(':discount', $discount);
-    $stmt->bindParam(':image_path', $image_path);
-    $stmt->execute();
-
+    $controller->insertCar($data);
     echo json_encode(['success' => true, 'message' => 'Car added successfully!']);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
 }
 exit;
-?>

@@ -19,8 +19,9 @@
           </div>
           <div class="mb-3">
             <label for="carYear" class="form-label">Year</label>
-            <input type="number" class="form-control" id="carYear" name="year" required>
-          </div>
+            <input type="number" class="form-control" id="carYear" name="year" step="1" required>
+        </div>
+
           <div class="mb-3">
             <label for="carTransmission" class="form-label">Transmission</label>
             <select class="form-select" id="carTransmission" name="transmission" required>
@@ -87,7 +88,7 @@
           <!-- Image Upload -->
           <div class="mb-3">
             <label for="carImage" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" id="carImage" name="car_image" accept="image/*" required>
+            <input type="file" class="form-control" id="image_path" name="image_path" accept="image/*" required>
           </div>
           
         </div>

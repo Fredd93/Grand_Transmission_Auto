@@ -54,7 +54,7 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
           <?php if ($isEmployee): ?>
             <!-- Three-dot options menu for Edit / Remove -->
             <div class="card-options" style="position: absolute; top: 0.5rem; right: 0.5rem;">
-              <button class="options-btn btn btn-link" onclick="toggleOptionsMenu(event, <?php echo $car->getCarId(); ?>)">
+              <button class="options-btn btn btn-link" data-car-id="<?php echo $car->getCarId(); ?>">
                 &#x22EE;
               </button>
               <div class="options-menu" id="options-menu-<?php echo $car->getCarId(); ?>" style="display: none; position: absolute; right: 0; background: #fff; border: 1px solid #ccc; border-radius: 4px; z-index: 100;">
@@ -90,7 +90,7 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
   </section>
 </div>
 
-<!-- Include the Add Car Modal from partial -->
+<!-- Include the Add Car Modal -->
 <?php include __DIR__ . '/../partials/addCarModal.php'; ?>
 
 <?php
@@ -98,57 +98,7 @@ $isEmployee = isset($_SESSION['role']) && in_array($_SESSION['role'], ['employee
 include __DIR__ . '/../partials/footer.php';
 ?>
 
-<!-- Include the dedicated car filtering JavaScript -->
-<script src="/assets/js/carFilter.js"></script>
-<!-- Include the add car functionality JavaScript -->
-<script src="/assets/js/addCar.js"></script>
-
-<!-- Inline JavaScript for handling employee actions -->
-<script>
-  // Toggle display of the options menu for a car
-  function toggleOptionsMenu(event, carId) {
-    event.stopPropagation();
-    const menu = document.getElementById('options-menu-' + carId);
-    // Hide any other open menus
-    document.querySelectorAll('.options-menu').forEach(m => {
-      if (m !== menu) m.style.display = 'none';
-    });
-    menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
-  }
-
-  // Hide open menus when clicking outside
-  document.addEventListener('click', function() {
-    document.querySelectorAll('.options-menu').forEach(menu => {
-      menu.style.display = 'none';
-    });
-  });
-
-  // Event delegation for Edit and Delete options
-  document.addEventListener('click', function(e) {
-    if (e.target.matches('.edit-car')) {
-      e.preventDefault();
-      const carId = e.target.getAttribute('data-car-id');
-      // Trigger your edit logic (e.g., open an edit modal)
-      console.log("Edit car", carId);
-      // TODO: Implement edit functionality
-    } else if (e.target.matches('.delete-car')) {
-      e.preventDefault();
-      const carId = e.target.getAttribute('data-car-id');
-      if (confirm("Are you sure you want to remove this car?")) {
-        // Trigger your delete logic via AJAX
-        fetch('/api/delete_car?car_id=' + encodeURIComponent(carId))
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // Remove the card from the DOM
-              const card = document.querySelector(`.card[data-car-id="${carId}"]`);
-              if (card) card.remove();
-            } else {
-              alert("Failed to remove car: " + data.message);
-            }
-          })
-          .catch(error => console.error("Error deleting car:", error));
-      }
-    }
-  });
-</script>
+<!-- External JavaScript Files -->
+<script src="../../assets/js/carFilter.js"></script>
+<script src="../../assets/js/addCar.js"></script>
+<script src="../../assets/js/car.js"></script>
