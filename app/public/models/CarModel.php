@@ -14,17 +14,42 @@ class CarModel extends BaseModel
         $sql = "SELECT * FROM cars";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $results = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $results[] = new CarDTO(
+                $row['car_id'],
+                $row['brand'],
+                $row['model'],
+                $row['price'],
+                $row['on_sale'],
+                $row['discount'],
+                $row['image_path']
+            );
+        }
+        return $results;
     }
-    
+
     public function getFeaturedCars()
     {
         $sql = "SELECT * FROM cars ORDER BY RAND() LIMIT 5";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $results[] = new CarDTO(
+                $row['car_id'],
+                $row['brand'],
+                $row['model'],
+                $row['price'],
+                $row['on_sale'],
+                $row['discount'],
+                $row['image_path']
+            );
+        }
+        return $results;
     }
-    
+
     public function getNewArrivals()
     {
         $sql = "SELECT * FROM cars WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY created_at DESC LIMIT 5";
@@ -109,7 +134,7 @@ class CarModel extends BaseModel
     {
         $sql = "SELECT * FROM cars WHERE 1=1";
         $params = [];
-    
+
         if (!empty($filters['brand'])) {
             $sql .= " AND brand = :brand";
             $params[':brand'] = $filters['brand'];
@@ -134,11 +159,25 @@ class CarModel extends BaseModel
             $sql .= " AND price <= :price_max";
             $params[':price_max'] = $filters['price_max'];
         }
-    
+
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $results = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $results[] = new CarDTO(
+                $row['car_id'],
+                $row['brand'],
+                $row['model'],
+                $row['price'],
+                $row['on_sale'],
+                $row['discount'],
+                $row['image_path']
+            );
+        }
+        return $results;
     }
+
     public function insertCar($data)
     {
         $sql = "INSERT INTO cars (
@@ -220,5 +259,13 @@ class CarModel extends BaseModel
 
         return $stmt->execute();
     }
+    public function deleteCarById($id)
+    {
+        $sql = "DELETE FROM cars WHERE car_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
 
 }

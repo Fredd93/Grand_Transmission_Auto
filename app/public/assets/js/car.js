@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
           document.getElementById('editCarDescription').value = car.description || '';
           document.getElementById('editCarColor').value = car.color || '';
           document.getElementById('editCarPrice').value = car.price;
-          document.getElementById('editCarOnSale').value = car.on_sale === 1 ? 'yes' : 'no';
+          document.getElementById('editCarOnSale').value = car.on_sale === 'yes' || car.on_sale === 1 ? 'yes' : 'no';
           document.getElementById('editCarDiscount').value = car.discount;
-          document.getElementById('editCarLeaseAvailable').value = car.lease_available === 1 ? 'yes' : 'no';
+          document.getElementById('editCarLeaseAvailable').value = car.lease_available === 'yes' || car.lease_available === 1 ? 'yes' : 'no';
           document.getElementById('editCarLeaseTerms').value = car.lease_terms || '';
           document.getElementById('editCarStatus').value = car.status;
           document.getElementById('existingImagePath').value = car.image_path || '';
@@ -67,12 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
           alert('Could not load car details.');
         });
 
-    // --- DELETE ---
+      // --- DELETE ---
     } else if (e.target.matches('.delete-car')) {
       e.preventDefault();
       const carId = e.target.getAttribute('data-car-id');
       if (confirm("Are you sure you want to remove this car?")) {
-        fetch('/api/delete_car?car_id=' + encodeURIComponent(carId))
+        fetch(`/api/car/delete/${encodeURIComponent(carId)}`)
           .then(response => response.json())
           .then(data => {
             if (data.success) {
@@ -82,7 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
               alert("Failed to remove car: " + data.message);
             }
           })
-          .catch(error => console.error("Error deleting car:", error));
+          .catch(error => {
+            console.error("Error deleting car:", error);
+            alert("An error occurred while deleting the car.");
+          });
       }
     }
   });

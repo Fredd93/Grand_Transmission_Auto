@@ -18,8 +18,7 @@
             <?php if ($car->getOnSale() === 'yes'): ?>
               <p class="text-danger">On Sale: <?php echo htmlspecialchars($car->getDiscount()); ?>% off</p>
             <?php endif; ?>
-            <a href="details.php?id=<?php echo urlencode($car->getCarId()); ?>" class="btn btn-outline-accent">View Details</a>
-            <a href="purchase.php?id=<?php echo urlencode($car->getCarId()); ?>" class="btn btn-outline-accent">Purchase Options</a>
+            <a href="/car/<?php echo urlencode($car->getCarId()); ?>" class="btn btn-outline-accent">View Details</a>
 
           </div>
         </div>

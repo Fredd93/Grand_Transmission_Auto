@@ -1,47 +1,39 @@
-document.addEventListener('DOMContentLoaded', () => {
-    if (!carId) {
-        document.getElementById('car-details').innerHTML = '<p>Invalid Car ID</p>';
-        return;
-    }
-
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('carContent');
+  
     fetch(`/api/cars/${carId}`)
-        .then(res => res.json())
-        .then(car => {
-            if (!car || !car.car_id) {
-                document.getElementById('car-details').innerHTML = '<p>Car not found</p>';
-                return;
-            }
-
-            const isOnSale = car.on_sale === 'yes' && car.discount > 0;
-            const originalPrice = Number(car.price).toFixed(2);
-            const discountedPrice = (car.price * (1 - car.discount / 100)).toFixed(2);
-
-            const priceHTML = isOnSale
-                ? `<p class="card-text">Price: <del>$${originalPrice}</del> <span class="text-success">$${discountedPrice}</span></p>
-                   <p class="text-danger">On Sale: ${car.discount}% OFF</p>`
-                : `<p class="card-text">Price: $${originalPrice}</p>`;
-
-            document.getElementById('car-details').innerHTML = `
-                <img src="/assets/images/${car.image_path}" alt="${car.brand} ${car.model}" class="card-img-top">
-                <div class="card-body">
-                    <h3 class="card-title">${car.brand} ${car.model}</h3>
-                    ${priceHTML}
-                    <p><strong>Year:</strong> ${car.year}</p>
-                    <p><strong>Transmission:</strong> ${car.transmission}</p>
-                    <p><strong>Condition:</strong> ${car.car_condition}</p>
-                    <p><strong>Engine:</strong> ${car.engine_spec}</p>
-                    <p><strong>Color:</strong> ${car.color}</p>
-                    <p><strong>Description:</strong> ${car.description}</p>
-                    <p><strong>Status:</strong> ${car.status}</p>
-                </div>
-            `;
-
-            document.getElementById('order-action').innerHTML = `
-                <a href="/order/create/${car.car_id}" class="btn btn-primary">Create Order</a>
-            `;
-        })
-        .catch(err => {
-            console.error('Error fetching car:', err);
-            document.getElementById('car-details').innerHTML = '<p>Failed to load car details</p>';
-        });
-});
+      .then(res => res.json())
+      .then(car => {
+        if (car.error) {
+          container.innerHTML = `<p class="text-danger">${car.error}</p>`;
+          return;
+        }
+  
+        container.innerHTML = `
+          <div class="row">
+            <div class="col-md-5 text-center">
+              <img src="/${car.image_path}" class="img-fluid rounded" alt="${car.brand} ${car.model}">
+            </div>
+            <div class="col-md-7">
+              <h3>${car.brand} ${car.model} (${car.year})</h3>
+              <p><strong>Transmission:</strong> ${car.transmission}</p>
+              <p><strong>Engine Spec:</strong> ${car.engine_spec || '—'}</p>
+              <p><strong>Condition:</strong> ${car.car_condition || '—'}</p>
+              <p><strong>Color:</strong> ${car.color || '—'}</p>
+              <p><strong>Price:</strong> $${parseFloat(car.price).toFixed(2)}</p>
+              <p><strong>On Sale:</strong> ${car.on_sale}</p>
+              <p><strong>Discount:</strong> ${car.discount}%</p>
+              <p><strong>Lease Available:</strong> ${car.lease_available}</p>
+              <p><strong>Lease Terms:</strong> ${car.lease_terms || '—'}</p>
+              <p><strong>Status:</strong> ${car.status}</p>
+              <p><strong>Description:</strong><br>${car.description || 'No description available.'}</p>
+            </div>
+          </div>
+        `;
+      })
+      .catch(err => {
+        console.error("Error fetching car details:", err);
+        container.innerHTML = `<p class="text-danger">Failed to load car details.</p>`;
+      });
+  });
+  
