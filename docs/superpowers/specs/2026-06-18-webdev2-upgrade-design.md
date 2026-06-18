@@ -246,7 +246,51 @@ Existing `grand_transmission_auto` schema is reused. One addition:
 
 ---
 
-## 7. Out of Scope
+## 7. API Documentation (Swagger / OpenAPI)
+
+A static `openapi.yaml` file is maintained at `app/docs/openapi.yaml` and served via Swagger UI at `/api/docs`.
+
+**Approach:** Swagger UI served as static HTML by nginx — no PHP library needed.
+
+```
+nginx.conf:
+  location /api/docs {
+    root /usr/share/nginx/html/swagger;
+    try_files $uri /index.html;
+  }
+```
+
+`openapi.yaml` documents all endpoints from Section 3.3 including:
+- Request/response schemas
+- Auth requirements (BearerAuth)
+- Pagination query parameters
+- Example responses and error shapes
+
+Swagger UI docker image (`swaggerapi/swagger-ui`) is added as a service on port `8090`.
+
+---
+
+## 8. README
+
+The repository root `README.md` includes:
+
+1. **Project Overview** — Grand Transmission Auto, WebDev 2 assignment context
+2. **Tech Stack** — PHP 8 / Vue 3 / MySQL / nginx / Docker
+3. **Getting Started**
+   - Prerequisites (Docker Desktop)
+   - `git clone` + `docker-compose up --build`
+   - Default credentials (admin, employee, client demo accounts)
+   - URLs: app `:80`, phpMyAdmin `:8080`, MailHog `:8025`, Swagger `:8090`
+4. **Project Structure** — annotated directory tree (backend + frontend)
+5. **API Reference** — link to Swagger UI at `http://localhost:8090`
+6. **User Roles** — table of admin / employee / client permissions
+7. **Environment Variables** — list of all `.env` keys with descriptions
+8. **Database Setup** — note about `grand_transmission_auto.sql` seed file
+9. **AI Disclosure Statement** — as required by rubric
+
+---
+
+## 9. Out of Scope
 
 - Email notifications (MailHog already set up, no new work needed)
 - Unit tests (not in rubric)
