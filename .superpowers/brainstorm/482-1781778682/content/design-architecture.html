@@ -1,0 +1,82 @@
+<h2>Design: System Architecture</h2>
+<p class="subtitle">Option B — Clean Restructure. Does this structure look right?</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+
+  <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+    <div class="label" style="color:#6366f1">PHP Backend — src/ structure</div>
+    <code style="display:block;font-size:0.78rem;line-height:1.9;white-space:pre;margin-top:0.5rem">app/
+├── public/
+│   └── index.php        ← single entry point
+├── src/
+│   ├── Controllers/
+│   │   ├── CarController.php
+│   │   ├── OrderController.php
+│   │   └── UserController.php
+│   ├── Models/
+│   │   ├── CarModel.php
+│   │   ├── OrderModel.php
+│   │   └── UserModel.php
+│   ├── Middleware/
+│   │   └── AuthMiddleware.php  ← JWT
+│   └── Routes/
+│       ├── api.php
+│       └── auth.php
+└── composer.json        ← PSR-4 autoload</code>
+  </div>
+
+  <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+    <div class="label" style="color:#f59e0b">Vue 3 Frontend</div>
+    <code style="display:block;font-size:0.78rem;line-height:1.9;white-space:pre;margin-top:0.5rem">frontend/
+├── src/
+│   ├── components/
+│   │   ├── CarCard.vue
+│   │   ├── Navbar.vue
+│   │   └── CarFilter.vue
+│   ├── views/
+│   │   ├── HomeView.vue
+│   │   ├── CarsView.vue
+│   │   ├── CarDetailView.vue
+│   │   ├── LoginView.vue
+│   │   ├── DashboardView.vue
+│   │   └── OrdersView.vue
+│   ├── router/
+│   │   └── index.js     ← Vue Router
+│   ├── stores/
+│   │   ├── auth.js      ← Pinia (JWT + user)
+│   │   └── cars.js      ← Pinia (car state)
+│   └── api/
+│       └── client.js    ← Axios + Bearer token
+└── package.json</code>
+  </div>
+</div>
+
+<div style="margin-top:1.2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+  <div class="label">Request Flow</div>
+  <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;font-size:0.85rem">
+    <span style="background:#6366f1;color:white;padding:4px 10px;border-radius:4px">Browser (Vue SPA)</span>
+    <span>→ Axios + Bearer JWT →</span>
+    <span style="background:#f59e0b;color:white;padding:4px 10px;border-radius:4px">nginx (port 80)</span>
+    <span>→ /api/* →</span>
+    <span style="background:#22c55e;color:white;padding:4px 10px;border-radius:4px">PHP AuthMiddleware</span>
+    <span>→ Controller →</span>
+    <span style="background:#64748b;color:white;padding:4px 10px;border-radius:4px">Model → MySQL</span>
+  </div>
+  <div style="margin-top:0.75rem;font-size:0.82rem;color:var(--color-muted)">
+    nginx serves <code>frontend/dist/</code> for all non-API routes (SPA fallback). PHP handles <code>/api/*</code> only.
+  </div>
+</div>
+
+<div style="margin-top:1.2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+  <div class="label">Docker Services (unchanged + 1 new)</div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.5rem;margin-top:0.75rem;font-size:0.8rem;text-align:center">
+    <div style="border:1px solid #6366f1;border-radius:6px;padding:8px"><strong>nginx</strong><br><span style="color:var(--color-muted)">:80<br>serves Vue dist + proxies /api</span></div>
+    <div style="border:1px solid #f59e0b;border-radius:6px;padding:8px"><strong>php</strong><br><span style="color:var(--color-muted)">:9000<br>PHP-FPM, API only</span></div>
+    <div style="border:1px solid #22c55e;border-radius:6px;padding:8px"><strong>mysql</strong><br><span style="color:var(--color-muted)">:3306<br>unchanged</span></div>
+    <div style="border:1px solid #64748b;border-radius:6px;padding:8px"><strong>phpmyadmin</strong><br><span style="color:var(--color-muted)">:8080<br>unchanged</span></div>
+    <div style="border:1px solid #ec4899;border-radius:6px;padding:8px"><strong>mailhog</strong><br><span style="color:var(--color-muted)">:8025<br>unchanged</span></div>
+  </div>
+  <p style="font-size:0.82rem;color:var(--color-muted);margin-top:0.5rem">Vue is built during Docker image build (<code>npm run build</code>) — no separate dev service needed for submission.</p>
+</div>
+
+<p class="subtitle" style="margin-top:1rem">Does this architecture look right? Confirm in terminal.</p>

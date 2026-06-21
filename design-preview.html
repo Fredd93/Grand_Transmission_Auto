@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Transmission Auto — Design v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── LIGHT THEME (default) ────────────────────────────────── */
+  :root {
+    --blue:      #2563EB;
+    --blue-lt:   #EFF6FF;
+    --blue-md:   #DBEAFE;
+    --ink:       #0F172A;
+    --ink2:      #475569;
+    --ink3:      #94A3B8;
+    --canvas:    #F1F3F6;    /* page background — easy on the eyes */
+    --surface:   #FFFFFF;    /* cards, nav, panels */
+    --off:       #E8EBF0;    /* image placeholders, brand icons */
+    --border:    rgba(15,23,42,0.07);
+    --nav-bg:    rgba(241,243,246,0.88);
+    --hero-l-bg: #F1F3F6;
+    --hero-r-from: #EFF6FF;
+    --hero-r-to:   #93C5FD;
+    --glass-btn:  rgba(37,99,235,0.88);
+    --glass-btn-border: rgba(255,255,255,0.32);
+    --glass-btn-inner:  rgba(255,255,255,0.22);
+    --toggle-bg: rgba(0,0,0,0.06);
+    --toggle-border: rgba(0,0,0,0.08);
+  }
+
+  /* ── DARK THEME ───────────────────────────────────────────── */
+  [data-theme="dark"] {
+    --blue-lt:   rgba(37,99,235,0.15);
+    --blue-md:   rgba(37,99,235,0.22);
+    --ink:       #F1F5F9;
+    --ink2:      #94A3B8;
+    --ink3:      #475569;
+    --canvas:    #080D1A;
+    --surface:   #0F1829;
+    --off:       #1A2440;
+    --border:    rgba(255,255,255,0.07);
+    --nav-bg:    rgba(8,13,26,0.88);
+    --hero-l-bg: #080D1A;
+    --hero-r-from: #0C1A3A;
+    --hero-r-to:   #0D2060;
+    --glass-btn:  rgba(37,99,235,0.72);
+    --glass-btn-border: rgba(255,255,255,0.2);
+    --glass-btn-inner:  rgba(255,255,255,0.12);
+    --toggle-bg: rgba(255,255,255,0.08);
+    --toggle-border: rgba(255,255,255,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    transition: background .3s ease, color .3s ease;
+  }
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 3rem; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border-bottom: 1px solid var(--border);
+    transition: background .3s ease;
+  }
+  .nav-logo { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; text-decoration: none; transition: color .3s; }
+  .nav-logo span { color: var(--blue); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 14px; font-weight: 500; color: var(--ink2); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-login {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 500; color: var(--ink2);
+    background: none; border: none; cursor: pointer;
+    transition: color .2s;
+    padding: 8px 12px;
+  }
+  .nav-login:hover { color: var(--ink); }
+
+  /* Liquid glass CTA button */
+  .nav-cta {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 600;
+    padding: 9px 22px;
+    background: var(--glass-btn);
+    color: #fff;
+    border: 1px solid var(--glass-btn-border);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 6px 18px rgba(37,99,235,0.22);
+    transition: box-shadow .2s, opacity .2s, transform .1s;
+  }
+  .nav-cta:hover {
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 10px 24px rgba(37,99,235,0.32);
+    opacity: 0.95;
+  }
+  .nav-cta:active { transform: scale(0.98); }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--toggle-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--toggle-border);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink2);
+    transition: background .2s, border-color .2s, color .2s, transform .1s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { color: var(--ink); transform: scale(1.08); }
+  .theme-toggle:active { transform: scale(0.94); }
+  .theme-toggle .icon-sun { display: block; }
+  .theme-toggle .icon-moon { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+  /* ── HERO ─────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100dvh;
+    padding-top: 64px;
+    background: var(--hero-l-bg);
+    display: flex;
+    flex-direction: column;
+    transition: background .3s ease;
+  }
+  .hero-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+  }
+
+  /* Left: canvas-toned, text */
+  .hero-l {
+    padding: 5rem 3rem 5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    background: var(--hero-l-bg);
+    transition: background .3s ease;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .hero-h1 {
+    font-size: clamp(2.6rem, 4vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+  .hero-h1 em { font-style: normal; color: var(--blue); }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--ink2);
+    line-height: 1.75;
+    max-width: 38ch;
+  }
+  .hero-btns { display: flex; gap: 12px; align-items: center; margin-top: 0.25rem; }
+
+  /* Liquid glass primary button */
+  .btn-blue {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 600;
+    padding: 13px 28px;
+    background: var(--glass-btn);
+    color: #fff;
+    border: 1px solid var(--glass-btn-border);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 8px 24px rgba(37,99,235,0.26);
+    transition: box-shadow .2s, transform .1s, opacity .2s;
+  }
+  .btn-blue:hover {
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 14px 32px rgba(37,99,235,0.36);
+  }
+  .btn-blue:active { transform: scale(0.98); }
+
+  .btn-link {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 500;
+    padding: 12px 18px;
+    background: var(--toggle-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--toggle-border);
+    border-radius: 8px;
+    color: var(--ink2);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: color .2s, background .2s, border-color .2s;
+  }
+  .btn-link:hover { color: var(--ink); background: var(--toggle-bg); }
+
+  /* Mini trust badges */
+  .hero-trust { display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+  .trust-item { display: flex; align-items: center; gap: 8px; }
+  .trust-icon {
+    width: 32px; height: 32px;
+    background: var(--blue-lt);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue); flex-shrink: 0;
+  }
+  .trust-text { font-size: 12px; }
+  .trust-text strong { display: block; font-size: 13px; font-weight: 700; color: var(--ink); }
+  .trust-text span { color: var(--ink3); }
+
+  /* Right: atmospheric gradient, car, glass card */
+  .hero-r {
+    background: linear-gradient(140deg, var(--hero-r-from) 0%, #BFDBFE 35%, #7DD3FC 65%, var(--hero-r-to) 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 3rem;
+    transition: background .3s ease;
+  }
+
+  [data-theme="dark"] .hero-r {
+    background: linear-gradient(140deg, #0C1A3A 0%, #0F2356 35%, #112760 65%, #0D2060 100%);
+  }
+
+  /* Atmosphere glow */
+  .hero-r::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.35) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  [data-theme="dark"] .hero-r::before {
+    background: radial-gradient(ellipse, rgba(37,99,235,0.15) 0%, transparent 70%);
+  }
+
+  .hero-car-wrap { position: relative; width: 100%; max-width: 520px; z-index: 1; }
+
+  .hero-car-svg {
+    width: 100%;
+    filter: drop-shadow(0 20px 60px rgba(37,99,235,0.18)) drop-shadow(0 4px 16px rgba(0,0,0,0.1));
+  }
+  [data-theme="dark"] .hero-car-svg {
+    filter: drop-shadow(0 20px 60px rgba(37,99,235,0.3)) drop-shadow(0 4px 16px rgba(0,0,0,0.4));
+  }
+
+  /* Glassmorphism spec card */
+  .glass-card {
+    position: absolute;
+    bottom: -1.5rem;
+    right: 0;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid rgba(255,255,255,0.88);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1.25rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 32px rgba(37,99,235,0.1);
+  }
+  [data-theme="dark"] .glass-card {
+    background: rgba(15,24,58,0.65);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .glass-spec { text-align: center; }
+  .glass-spec-icon {
+    width: 28px; height: 28px;
+    background: var(--blue-lt);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue); margin: 0 auto 5px;
+  }
+  .glass-spec-val { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .glass-spec-lbl { font-size: 10px; color: var(--ink3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Car label top-left */
+  .hero-car-label { position: absolute; top: -0.5rem; left: 0; }
+  .car-label-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .car-label-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #FEF9C3; color: #854D0E;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 100px;
+    letter-spacing: 0.04em; margin-top: 4px;
+  }
+  [data-theme="dark"] .car-label-tag { background: rgba(254,249,195,0.15); color: #FDE047; }
+
+  /* Thumbnail strip */
+  .hero-thumbs { display: flex; gap: 10px; margin-top: 2.5rem; z-index: 1; }
+  .hero-thumb {
+    width: 110px; height: 70px;
+    background: rgba(255,255,255,0.48);
+    backdrop-filter: blur(10px) saturate(1.3);
+    -webkit-backdrop-filter: blur(10px) saturate(1.3);
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: var(--ink2);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  [data-theme="dark"] .hero-thumb {
+    background: rgba(15,24,58,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .hero-thumb:hover { background: rgba(255,255,255,0.7); }
+  [data-theme="dark"] .hero-thumb:hover { background: rgba(15,24,58,0.75); }
+  .hero-thumb.active { border-color: var(--blue); color: var(--blue); }
+
+  /* Carousel dots */
+  .hero-dots { display: flex; gap: 6px; margin-top: 1.25rem; z-index: 1; }
+  .dot { width: 6px; height: 6px; border-radius: 100px; background: rgba(37,99,235,0.25); transition: all .2s; }
+  .dot.on { width: 18px; background: var(--blue); }
+
+  /* ── SEARCH PANEL ──────────────────────────────────────────── */
+  .search-panel {
+    background: var(--surface);
+    padding: 2rem 3rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.05), 0 1px 0 var(--border);
+    position: relative;
+    z-index: 10;
+    transition: background .3s ease;
+  }
+  .search-tabs { display: flex; gap: 0; margin-bottom: 1.25rem; }
+  .stab {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 6px 18px;
+    background: none;
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--ink2);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .stab:first-child { border-radius: 8px 0 0 8px; }
+  .stab:last-child { border-right: 1px solid var(--border); border-radius: 0 8px 8px 0; }
+  .stab.on {
+    background: var(--glass-btn);
+    color: #fff;
+    border-color: var(--blue);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner);
+  }
+  .search-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .search-select-wrap { position: relative; }
+  .search-select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--ink3);
+    pointer-events: none;
+  }
+  select {
+    width: 100%;
+    padding: 11px 36px 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--canvas);
+    appearance: none; -webkit-appearance: none;
+    cursor: pointer; outline: none;
+    transition: border-color .2s, background .3s, color .3s;
+  }
+  select:focus { border-color: var(--blue); }
+
+  /* Liquid glass search button */
+  .btn-search {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 700;
+    padding: 11px 32px;
+    background: var(--glass-btn);
+    color: #fff;
+    border: 1px solid var(--glass-btn-border);
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 6px 18px rgba(37,99,235,0.22);
+    transition: box-shadow .2s, transform .1s;
+  }
+  .btn-search:hover { box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 10px 24px rgba(37,99,235,0.32); }
+  .btn-search:active { transform: scale(0.98); }
+
+  /* ── BRANDS ────────────────────────────────────────────────── */
+  .brands-section { padding: 4rem 3rem; background: var(--canvas); transition: background .3s; }
+  .brands-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2rem; }
+  .sec-eye { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.35rem; }
+  .sec-h { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em; color: var(--ink); }
+  .sec-link { font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none; display: flex; align-items: center; gap: 4px; }
+
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+    transition: background .3s, border-color .3s;
+  }
+  .brand-item {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .brand-item:nth-child(6n) { border-right: none; }
+  .brand-item:nth-child(n+7) { border-bottom: none; }
+  .brand-item:hover { background: var(--canvas); }
+  .brand-item.sel { background: var(--blue-lt); }
+  .brand-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--off);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 11px; font-weight: 900;
+    color: var(--ink2);
+    letter-spacing: -0.02em;
+    transition: background .15s;
+  }
+  .brand-item.sel .brand-icon { background: var(--blue-md); color: var(--blue); }
+  .brand-name { font-size: 12px; font-weight: 600; color: var(--ink2); }
+  .brand-item.sel .brand-name { color: var(--blue); }
+  .brand-count { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* ── CARS GRID ─────────────────────────────────────────────── */
+  .cars-section { padding: 0 3rem 5rem; background: var(--canvas); transition: background .3s; }
+  .cars-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem; }
+
+  .car-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  /* Subtle frosted glass card — translucent surface, keeps the canvas visible */
+  .car-card {
+    background: rgba(255,255,255,0.62);
+    backdrop-filter: blur(18px) saturate(1.5);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+    border: 1px solid rgba(255,255,255,0.85);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.95),
+      0 4px 24px rgba(15,23,42,0.06),
+      0 1px 4px rgba(15,23,42,0.04);
+    transition: transform .22s cubic-bezier(.16,1,.3,1), box-shadow .22s cubic-bezier(.16,1,.3,1);
+    cursor: pointer;
+  }
+  .car-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.95),
+      0 20px 44px rgba(15,23,42,0.10),
+      0 4px 12px rgba(15,23,42,0.06);
+  }
+  /* Dark mode: dark translucent glass */
+  [data-theme="dark"] .car-card {
+    background: rgba(15,25,58,0.52);
+    border: 1px solid rgba(255,255,255,0.09);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.07),
+      0 4px 24px rgba(0,0,0,0.3);
+  }
+  [data-theme="dark"] .car-card:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.09),
+      0 20px 44px rgba(0,0,0,0.4);
+  }
+  .car-card-img {
+    background: rgba(232,235,240,0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    width: 100%;
+    aspect-ratio: 16/10;
+    display: flex; align-items: center; justify-content: center;
+    color: #CBD5E1;
+    position: relative;
+  }
+  [data-theme="dark"] .car-card-img { background: rgba(8,14,36,0.6); }
+  .sale-ribbon {
+    position: absolute; top: 12px; left: 12px;
+    background: #FEF08A; color: #713F12;
+    font-size: 10px; font-weight: 800;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+  [data-theme="dark"] .sale-ribbon { background: rgba(254,240,138,0.18); color: #FDE047; }
+  .car-card-body { padding: 1.25rem 1.5rem 1.5rem; }
+  .car-card-brand { font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 3px; }
+  .car-card-name { font-size: 1.1rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 10px; }
+  .car-card-specs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .spec-chip {
+    font-size: 11px; font-weight: 500; color: var(--ink2);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 4px 10px; border-radius: 100px;
+    display: flex; align-items: center; gap: 4px;
+    border: 1px solid rgba(255,255,255,0.7);
+  }
+  [data-theme="dark"] .spec-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .spec-chip svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .car-card-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .car-price { font-size: 1.2rem; font-weight: 800; color: var(--ink); }
+  .car-price-was { font-size: 12px; color: var(--ink3); text-decoration: line-through; margin-bottom: 1px; }
+
+  /* Liquid glass card view button */
+  .btn-card-view {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 8px 18px;
+    background: var(--glass-btn);
+    color: #fff;
+    border: 1px solid var(--glass-btn-border);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(10px) saturate(1.3);
+    -webkit-backdrop-filter: blur(10px) saturate(1.3);
+    box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 4px 12px rgba(37,99,235,0.18);
+    transition: box-shadow .2s, transform .1s;
+  }
+  .btn-card-view:hover { box-shadow: inset 0 1px 0 var(--glass-btn-inner), 0 8px 20px rgba(37,99,235,0.28); }
+  .btn-card-view:active { transform: scale(0.97); }
+
+  /* ── CERTIFIED BANNER ──────────────────────────────────────── */
+  .certified {
+    margin: 0 3rem 4rem;
+    background: linear-gradient(120deg, #1E3A8A 0%, #1D4ED8 50%, #2563EB 100%);
+    border-radius: 16px;
+    padding: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 2rem;
+  }
+  .cert-h { font-size: 1.75rem; font-weight: 800; color: #fff; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+  .cert-s { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.65; max-width: 48ch; }
+
+  /* Liquid glass white button */
+  .btn-white {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 700;
+    padding: 12px 28px;
+    background: rgba(255,255,255,0.88);
+    color: var(--blue);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 6px 18px rgba(37,99,235,0.18);
+    transition: box-shadow .2s, opacity .2s, transform .1s;
+  }
+  .btn-white:hover {
+    background: rgba(255,255,255,0.96);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 24px rgba(37,99,235,0.26);
+  }
+  .btn-white:active { transform: scale(0.98); }
+
+  /* ── FOOTER ────────────────────────────────────────────────── */
+  .footer {
+    background: var(--ink);
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background .3s;
+  }
+  [data-theme="dark"] .footer { background: #030609; }
+  .footer-logo { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+  .footer-logo span { color: #60A5FA; }
+  .footer-links { display: flex; gap: 2rem; list-style: none; }
+  .footer-links a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; }
+  .footer-links a:hover { color: rgba(255,255,255,0.75); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+  /* ── RESPONSIVE ────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-r { min-height: 380px; }
+    .hero-l { padding: 3.5rem 1.5rem 2rem; }
+    .brands-grid { grid-template-columns: repeat(3, 1fr); }
+    .brand-item:nth-child(3n) { border-right: none; }
+    .brand-item:nth-child(3n+1) { border-right: 1px solid var(--border); }
+    .car-grid { grid-template-columns: 1fr 1fr; }
+    .search-row { grid-template-columns: 1fr 1fr; }
+    .btn-search { grid-column: span 2; }
+    .nav-links { display: none; }
+    .brands-section, .cars-section, .search-panel { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .certified { margin-left: 1.5rem; margin-right: 1.5rem; grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .car-grid { grid-template-columns: 1fr; }
+    .hero-h1 { font-size: 2.4rem; }
+    .brands-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">GTA<span>.</span>Auto</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#stock">Stock</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+      <!-- Sun icon -->
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+      <!-- Moon icon -->
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <button class="nav-login">Login</button>
+    <button class="nav-cta">Book a Test Drive</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+
+    <!-- Text side -->
+    <div class="hero-l">
+      <p class="hero-eyebrow">Grand Transmission Auto</p>
+      <h1 class="hero-h1">Find your<br><em>perfect</em><br>drive.</h1>
+      <p class="hero-desc">From a reliable Corolla to a Porsche GT3 — every car on our lot is inspected, honestly priced, and ready today.</p>
+      <div class="hero-btns">
+        <button class="btn-blue" onclick="document.querySelector('#stock').scrollIntoView({behavior:'smooth'})">Browse stock</button>
+        <button class="btn-link">
+          Discover more
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="trust-text"><strong>Certified</strong><span>All vehicles inspected</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="trust-text"><strong>Same day</strong><span>Test drives available</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM1 10h3M20 10h3"/></svg>
+          </div>
+          <div class="trust-text"><strong>Financing</strong><span>Flexible plans available</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Atmospheric car side -->
+    <div class="hero-r">
+      <div class="hero-car-wrap">
+        <div class="hero-car-label">
+          <div class="car-label-name">BMW X3 xDrive30i · 2022</div>
+          <span class="car-label-tag">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Certified vehicle
+          </span>
+        </div>
+
+        <!-- Car SVG — side profile sedan -->
+        <svg class="hero-car-svg" viewBox="0 0 560 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 195 L44 195 C32 195 22 185 22 173 L22 152 L80 72 L478 72 L536 152 L536 173 C536 185 526 195 514 195 L500 195" fill="rgba(255,255,255,0.9)" stroke="#CBD5E1" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M80 72 L140 26 L418 26 L478 72 Z" fill="rgba(255,255,255,0.9)" stroke="#CBD5E1" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M152 30 L96 70 L240 70 L230 30 Z" fill="rgba(186,218,255,0.45)" stroke="#BFDBFE" stroke-width="1"/>
+          <path d="M326 30 L408 70 L320 70 L316 30 Z" fill="rgba(186,218,255,0.45)" stroke="#BFDBFE" stroke-width="1"/>
+          <path d="M238 30 L316 30 L320 70 L240 70 Z" fill="rgba(186,218,255,0.3)" stroke="#BFDBFE" stroke-width="1"/>
+          <line x1="240" y1="70" x2="240" y2="194" stroke="#CBD5E1" stroke-width="1"/>
+          <line x1="320" y1="70" x2="320" y2="194" stroke="#CBD5E1" stroke-width="1"/>
+          <path d="M478 100 L516 152" stroke="#E2E8F0" stroke-width="1"/>
+          <path d="M80 100 L42 152" stroke="#E2E8F0" stroke-width="1"/>
+          <rect x="260" y="134" width="24" height="5" rx="2.5" fill="#CBD5E1"/>
+          <rect x="340" y="134" width="24" height="5" rx="2.5" fill="#CBD5E1"/>
+          <circle cx="120" cy="198" r="46" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+          <circle cx="120" cy="198" r="32" fill="white" stroke="#CBD5E1" stroke-width="1.5"/>
+          <circle cx="120" cy="198" r="16" fill="#E2E8F0"/>
+          <circle cx="440" cy="198" r="46" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+          <circle cx="440" cy="198" r="32" fill="white" stroke="#CBD5E1" stroke-width="1.5"/>
+          <circle cx="440" cy="198" r="16" fill="#E2E8F0"/>
+          <line x1="120" y1="166" x2="120" y2="182" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="120" y1="214" x2="120" y2="230" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="88" y1="198" x2="104" y2="198" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="136" y1="198" x2="152" y2="198" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="440" y1="166" x2="440" y2="182" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="440" y1="214" x2="440" y2="230" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="408" y1="198" x2="424" y2="198" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="456" y1="198" x2="472" y2="198" stroke="#CBD5E1" stroke-width="1.5"/>
+          <ellipse cx="280" cy="246" rx="220" ry="10" fill="rgba(37,99,235,0.07)"/>
+          <path d="M500 152 L528 152 L530 168 L504 168 Z" fill="rgba(186,218,255,0.6)" stroke="#BFDBFE" stroke-width="1"/>
+          <path d="M50 152 L24 152 L22 168 L48 168 Z" fill="rgba(254,202,202,0.5)" stroke="#FECACA" stroke-width="1"/>
+          <line x1="90" y1="155" x2="470" y2="155" stroke="#BFDBFE" stroke-width="1.5" opacity="0.6"/>
+        </svg>
+
+        <!-- Glass spec card -->
+        <div class="glass-card">
+          <div class="glass-spec">
+            <div class="glass-spec-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l1.5 1.5M21 21l-1.5-1.5M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div>
+            <div class="glass-spec-val">Petrol</div>
+            <div class="glass-spec-lbl">Fuel</div>
+          </div>
+          <div class="glass-spec">
+            <div class="glass-spec-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="glass-spec-val">18,400</div>
+            <div class="glass-spec-lbl">KM</div>
+          </div>
+          <div class="glass-spec">
+            <div class="glass-spec-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div class="glass-spec-val">Auto</div>
+            <div class="glass-spec-lbl">Gearbox</div>
+          </div>
+          <div class="glass-spec">
+            <div class="glass-spec-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div class="glass-spec-val">2022</div>
+            <div class="glass-spec-lbl">Year</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thumbnail strip -->
+      <div class="hero-thumbs">
+        <div class="hero-thumb active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><circle cx="13" cy="17" r="4"/><circle cx="21" cy="17" r="4"/></svg>
+          &nbsp;Exterior
+        </div>
+        <div class="hero-thumb">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 6V4M18 6V4"/></svg>
+          &nbsp;Interior
+        </div>
+        <div class="hero-thumb">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          &nbsp;Details
+        </div>
+      </div>
+
+      <div class="hero-dots">
+        <div class="dot on"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH PANEL -->
+<div class="search-panel">
+  <div class="search-tabs">
+    <button class="stab on">All</button>
+    <button class="stab">New</button>
+    <button class="stab">Used</button>
+    <button class="stab">On Sale</button>
+  </div>
+  <div class="search-row">
+    <div class="search-select-wrap">
+      <select>
+        <option>Any Make</option>
+        <option>BMW</option><option>Mercedes-Benz</option><option>Toyota</option>
+        <option>Audi</option><option>Volkswagen</option><option>Porsche</option>
+        <option>Dodge</option><option>BYD</option>
+      </select>
+    </div>
+    <div class="search-select-wrap">
+      <select><option>Any Model</option></select>
+    </div>
+    <div class="search-select-wrap">
+      <select>
+        <option>Any Year</option>
+        <option>2024</option><option>2023</option><option>2022</option>
+        <option>2021</option><option>2020</option><option>2019</option>
+        <option>2018 and older</option>
+      </select>
+    </div>
+    <div class="search-select-wrap">
+      <select>
+        <option>Any Price</option>
+        <option>Under €15,000</option><option>€15,000 – €30,000</option>
+        <option>€30,000 – €60,000</option><option>Over €60,000</option>
+      </select>
+    </div>
+    <button class="btn-search">Search</button>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<!-- NOTE: Letter placeholders here — SVG brand logos to be swapped in later -->
+<section class="brands-section" id="stock">
+  <div class="brands-header">
+    <div>
+      <div class="sec-eye">Browse by brand</div>
+      <h2 class="sec-h">14 manufacturers in stock</h2>
+    </div>
+    <a class="sec-link" href="#">All brands <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </div>
+  <div class="brands-grid">
+    <div class="brand-item"><div class="brand-icon">T</div><div class="brand-name">Toyota</div><div class="brand-count">4 cars</div></div>
+    <div class="brand-item sel"><div class="brand-icon">A</div><div class="brand-name">Audi</div><div class="brand-count">3 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">B</div><div class="brand-name">BMW</div><div class="brand-count">6 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">M</div><div class="brand-name">Mercedes</div><div class="brand-count">5 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">P</div><div class="brand-name">Porsche</div><div class="brand-count">2 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">V</div><div class="brand-name">Volkswagen</div><div class="brand-count">4 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">H</div><div class="brand-name">Honda</div><div class="brand-count">3 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">D</div><div class="brand-name">Dodge</div><div class="brand-count">2 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">F</div><div class="brand-name">Ford</div><div class="brand-count">3 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">BY</div><div class="brand-name">BYD</div><div class="brand-count">2 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">N</div><div class="brand-name">Nissan</div><div class="brand-count">3 cars</div></div>
+    <div class="brand-item"><div class="brand-icon">Mi</div><div class="brand-name">Mitsubishi</div><div class="brand-count">2 cars</div></div>
+  </div>
+</section>
+
+<!-- CARS GRID -->
+<section class="cars-section">
+  <div class="cars-header">
+    <div>
+      <div class="sec-eye">Current stock</div>
+      <h2 class="sec-h">Cars available now</h2>
+    </div>
+    <a class="sec-link" href="#">View all 243 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </div>
+
+  <div class="car-grid">
+    <!-- BMW X3 -->
+    <div class="car-card">
+      <div class="car-card-img">
+        <svg width="140" height="70" viewBox="0 0 360 180" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M72 122H36C26 122 18 114 18 104V90L60 34H300L342 90V104C342 114 334 122 324 122H288" fill="rgba(248,250,252,0.8)"/>
+          <path d="M90 34l36-40h108l36 40" fill="rgba(219,234,254,0.5)"/>
+          <circle cx="90" cy="124" r="22" fill="white" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="90" cy="124" r="12" fill="#E2E8F0"/>
+          <circle cx="270" cy="124" r="22" fill="white" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="270" cy="124" r="12" fill="#E2E8F0"/>
+          <path d="M112 124h136M18 100h324"/>
+          <ellipse cx="180" cy="152" rx="140" ry="6" fill="rgba(0,0,0,0.04)"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-brand">BMW</div>
+        <div class="car-card-name">X3 xDrive30i</div>
+        <div class="car-card-specs">
+          <span class="spec-chip">2022</span>
+          <span class="spec-chip">18,400 km</span>
+          <span class="spec-chip">Automatic</span>
+        </div>
+        <div class="car-card-foot">
+          <div class="car-price">€44,900</div>
+          <button class="btn-card-view">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toyota Corolla -->
+    <div class="car-card">
+      <div class="car-card-img">
+        <span class="sale-ribbon">8% off</span>
+        <svg width="140" height="70" viewBox="0 0 360 180" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M72 122H36C26 122 18 114 18 104V90L60 34H300L342 90V104C342 114 334 122 324 122H288" fill="rgba(248,250,252,0.8)"/>
+          <path d="M90 34l36-40h108l36 40" fill="rgba(219,234,254,0.5)"/>
+          <circle cx="90" cy="124" r="22" fill="white"/><circle cx="90" cy="124" r="12" fill="#E2E8F0"/>
+          <circle cx="270" cy="124" r="22" fill="white"/><circle cx="270" cy="124" r="12" fill="#E2E8F0"/>
+          <path d="M112 124h136M18 100h324"/>
+          <ellipse cx="180" cy="152" rx="140" ry="6" fill="rgba(0,0,0,0.04)"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-brand">Toyota</div>
+        <div class="car-card-name">Corolla</div>
+        <div class="car-card-specs">
+          <span class="spec-chip">2002</span>
+          <span class="spec-chip">141,200 km</span>
+          <span class="spec-chip">Manual</span>
+        </div>
+        <div class="car-card-foot">
+          <div><div class="car-price-was">€9,950</div><div class="car-price">€9,200</div></div>
+          <button class="btn-card-view">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mercedes C-Class -->
+    <div class="car-card">
+      <div class="car-card-img">
+        <svg width="140" height="70" viewBox="0 0 360 180" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M72 122H36C26 122 18 114 18 104V90L60 34H300L342 90V104C342 114 334 122 324 122H288" fill="rgba(248,250,252,0.8)"/>
+          <path d="M90 34l36-40h108l36 40" fill="rgba(219,234,254,0.5)"/>
+          <circle cx="90" cy="124" r="22" fill="white"/><circle cx="90" cy="124" r="12" fill="#E2E8F0"/>
+          <circle cx="270" cy="124" r="22" fill="white"/><circle cx="270" cy="124" r="12" fill="#E2E8F0"/>
+          <path d="M112 124h136M18 100h324"/>
+          <ellipse cx="180" cy="152" rx="140" ry="6" fill="rgba(0,0,0,0.04)"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-brand">Mercedes-Benz</div>
+        <div class="car-card-name">C-Class 220d</div>
+        <div class="car-card-specs">
+          <span class="spec-chip">2019</span>
+          <span class="spec-chip">67,400 km</span>
+          <span class="spec-chip">Automatic</span>
+        </div>
+        <div class="car-card-foot">
+          <div class="car-price">€32,500</div>
+          <button class="btn-card-view">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dodge Charger -->
+    <div class="car-card">
+      <div class="car-card-img">
+        <span class="sale-ribbon">12% off</span>
+        <svg width="140" height="70" viewBox="0 0 360 180" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M72 122H36C26 122 18 114 18 104V90L60 34H300L342 90V104C342 114 334 122 324 122H288" fill="rgba(248,250,252,0.8)"/>
+          <path d="M90 34l36-40h108l36 40" fill="rgba(219,234,254,0.5)"/>
+          <circle cx="90" cy="124" r="22" fill="white"/><circle cx="90" cy="124" r="12" fill="#E2E8F0"/>
+          <circle cx="270" cy="124" r="22" fill="white"/><circle cx="270" cy="124" r="12" fill="#E2E8F0"/>
+          <path d="M112 124h136M18 100h324"/>
+          <ellipse cx="180" cy="152" rx="140" ry="6" fill="rgba(0,0,0,0.04)"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-brand">Dodge</div>
+        <div class="car-card-name">Charger SRT Hellcat</div>
+        <div class="car-card-specs">
+          <span class="spec-chip">2021</span>
+          <span class="spec-chip">31,200 km</span>
+          <span class="spec-chip">797 hp</span>
+        </div>
+        <div class="car-card-foot">
+          <div><div class="car-price-was">€77,700</div><div class="car-price">€68,400</div></div>
+          <button class="btn-card-view">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audi A4 -->
+    <div class="car-card">
+      <div class="car-card-img">
+        <svg width="140" height="70" viewBox="0 0 360 180" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M72 122H36C26 122 18 114 18 104V90L60 34H300L342 90V104C342 114 334 122 324 122H288" fill="rgba(248,250,252,0.8)"/>
+          <path d="M90 34l36-40h108l36 40" fill="rgba(219,234,254,0.5)"/>
+          <circle cx="90" cy="124" r="22" fill="white"/><circle cx="90" cy="124" r="12" fill="#E2E8F0"/>
+          <circle cx="270" cy="124" r="22" fill="white"/><circle cx="270" cy="124" r="12" fill="#E2E8F0"/>
+          <path d="M112 124h136M18 100h324"/>
+          <ellipse cx="180" cy="152" rx="140" ry="6" fill="rgba(0,0,0,0.04)"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-brand">Audi</div>
+        <div class="car-card-name">A4 Avant 40 TDI</div>
+        <div class="car-card-specs">
+          <span class="spec-chip">2020</span>
+          <span class="spec-chip">54,300 km</span>
+          <span class="spec-chip">Automatic</span>
+        </div>
+        <div class="car-card-foot">
+          <div class="car-price">€36,200</div>
+          <button class="btn-card-view">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VW Golf GTI -->
+    <div class="car-card">
+      <div class="car-card-img">
+        <svg width="140" height="70" viewBox="0 0 360 180" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M72 122H36C26 122 18 114 18 104V90L60 34H300L342 90V104C342 114 334 122 324 122H288" fill="rgba(248,250,252,0.8)"/>
+          <path d="M90 34l36-40h108l36 40" fill="rgba(219,234,254,0.5)"/>
+          <circle cx="90" cy="124" r="22" fill="white"/><circle cx="90" cy="124" r="12" fill="#E2E8F0"/>
+          <circle cx="270" cy="124" r="22" fill="white"/><circle cx="270" cy="124" r="12" fill="#E2E8F0"/>
+          <path d="M112 124h136M18 100h324"/>
+          <ellipse cx="180" cy="152" rx="140" ry="6" fill="rgba(0,0,0,0.04)"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-brand">Volkswagen</div>
+        <div class="car-card-name">Golf GTI TCR</div>
+        <div class="car-card-specs">
+          <span class="spec-chip">2019</span>
+          <span class="spec-chip">82,100 km</span>
+          <span class="spec-chip">Manual</span>
+        </div>
+        <div class="car-card-foot">
+          <div class="car-price">€27,800</div>
+          <button class="btn-card-view">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFIED BANNER -->
+<div class="certified">
+  <div>
+    <h2 class="cert-h">Every car. Certified.</h2>
+    <p class="cert-s">Each vehicle on our lot passes a 120-point inspection before it ever meets a customer. Honest history reports, no hidden fees — just a car you can trust.</p>
+  </div>
+  <button class="btn-white">Learn more</button>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">GTA<span>.</span>Auto</div>
+  <ul class="footer-links">
+    <li><a href="#">Stock</a></li>
+    <li><a href="#">Finance</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">Privacy</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Grand Transmission Auto</div>
+</footer>
+
+<script>
+  // Theme toggle
+  const html = document.documentElement;
+  const btn  = document.getElementById('themeToggle');
+
+  // Restore saved preference
+  const saved = localStorage.getItem('gta-theme');
+  if (saved) html.setAttribute('data-theme', saved);
+
+  btn.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('gta-theme', next);
+  });
+
+  // Search tabs
+  document.querySelectorAll('.stab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.stab').forEach(x => x.classList.remove('on'));
+      t.classList.add('on');
+    });
+  });
+
+  // Brand filter
+  document.querySelectorAll('.brand-item').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.brand-item').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+    });
+  });
+
+  // Hero tabs
+  document.querySelectorAll('.hero-thumb').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.hero-thumb').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

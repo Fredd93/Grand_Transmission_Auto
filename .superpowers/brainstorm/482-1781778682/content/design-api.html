@@ -1,0 +1,68 @@
+<h2>Design: REST API Endpoints</h2>
+<p class="subtitle">Clean naming, proper verbs, pagination on lists, error messages everywhere</p>
+
+<div style="margin-top:1rem">
+
+  <h3 style="margin-bottom:0.5rem">Auth <span style="font-size:0.75rem;color:var(--color-muted);font-weight:normal">(public — no JWT required)</span></h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+    <thead><tr style="background:var(--color-accent);color:white">
+      <th style="padding:8px;text-align:left">Method</th><th style="padding:8px;text-align:left">Endpoint</th><th style="padding:8px;text-align:left">Description</th><th style="padding:8px;text-align:left">Returns</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#22c55e;font-weight:bold">POST</span></td><td style="padding:8px"><code>/api/auth/login</code></td><td style="padding:8px">Login with email + password</td><td style="padding:8px"><code>{ token, user }</code></td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#22c55e;font-weight:bold">POST</span></td><td style="padding:8px"><code>/api/auth/register</code></td><td style="padding:8px">Register new client</td><td style="padding:8px"><code>{ token, user }</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin:1.2rem 0 0.5rem">Cars <span style="font-size:0.75rem;color:var(--color-muted);font-weight:normal">(GET public · POST/PUT/DELETE require employee+ role)</span></h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+    <thead><tr style="background:var(--color-accent);color:white">
+      <th style="padding:8px;text-align:left">Method</th><th style="padding:8px;text-align:left">Endpoint</th><th style="padding:8px;text-align:left">Description</th><th style="padding:8px;text-align:left">Notes</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/cars</code></td><td style="padding:8px">List all cars</td><td style="padding:8px">?page=1&amp;limit=12&amp;brand=BMW&amp;min_price=5000</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/cars/{id}</code></td><td style="padding:8px">Single car detail</td><td style="padding:8px">404 if not found</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#22c55e;font-weight:bold">POST</span></td><td style="padding:8px"><code>/api/cars</code></td><td style="padding:8px">Add new car listing</td><td style="padding:8px">Returns new car with id</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#f59e0b;font-weight:bold">PUT</span></td><td style="padding:8px"><code>/api/cars/{id}</code></td><td style="padding:8px">Update car details</td><td style="padding:8px">Partial update supported</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#ef4444;font-weight:bold">DELETE</span></td><td style="padding:8px"><code>/api/cars/{id}</code></td><td style="padding:8px">Remove car listing</td><td style="padding:8px">Admin only</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/cars/filters</code></td><td style="padding:8px">Filter options (brands, years…)</td><td style="padding:8px">Used to populate filter UI</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin:1.2rem 0 0.5rem">Orders <span style="font-size:0.75rem;color:var(--color-muted);font-weight:normal">(all require JWT)</span></h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+    <thead><tr style="background:var(--color-accent);color:white">
+      <th style="padding:8px;text-align:left">Method</th><th style="padding:8px;text-align:left">Endpoint</th><th style="padding:8px;text-align:left">Description</th><th style="padding:8px;text-align:left">Notes</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/orders</code></td><td style="padding:8px">List orders</td><td style="padding:8px">Client sees own · Employee sees all · ?page=1</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/orders/{id}</code></td><td style="padding:8px">Single order</td><td style="padding:8px">403 if not owner/employee</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#22c55e;font-weight:bold">POST</span></td><td style="padding:8px"><code>/api/orders</code></td><td style="padding:8px">Create order (buy/lease)</td><td style="padding:8px">Returns new order with id</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#f59e0b;font-weight:bold">PUT</span></td><td style="padding:8px"><code>/api/orders/{id}</code></td><td style="padding:8px">Update order status</td><td style="padding:8px">Employee+ only</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin:1.2rem 0 0.5rem">Users <span style="font-size:0.75rem;color:var(--color-muted);font-weight:normal">(admin only except own profile)</span></h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+    <thead><tr style="background:var(--color-accent);color:white">
+      <th style="padding:8px;text-align:left">Method</th><th style="padding:8px;text-align:left">Endpoint</th><th style="padding:8px;text-align:left">Description</th><th style="padding:8px;text-align:left">Notes</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/users</code></td><td style="padding:8px">List all users</td><td style="padding:8px">Admin only · ?page=1</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#60a5fa;font-weight:bold">GET</span></td><td style="padding:8px"><code>/api/users/{id}</code></td><td style="padding:8px">User profile</td><td style="padding:8px">Own profile or admin</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border);background:var(--color-surface)"><td style="padding:8px"><span style="color:#f59e0b;font-weight:bold">PUT</span></td><td style="padding:8px"><code>/api/users/{id}</code></td><td style="padding:8px">Update user / change role</td><td style="padding:8px">Role change = admin only</td></tr>
+      <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:8px"><span style="color:#ef4444;font-weight:bold">DELETE</span></td><td style="padding:8px"><code>/api/users/{id}</code></td><td style="padding:8px">Remove user</td><td style="padding:8px">Admin only</td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:1.2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem;font-size:0.82rem">
+    <div class="label">Pagination response shape (all list endpoints)</div>
+    <code style="display:block;margin-top:0.5rem;white-space:pre">{
+  "data": [ ...items... ],
+  "meta": { "total": 48, "page": 1, "limit": 12, "pages": 4 }
+}</code>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:1rem">Does this API design look right? Any endpoints to add or remove?</p>

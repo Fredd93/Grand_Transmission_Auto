@@ -1,0 +1,110 @@
+<h2>Grand Transmission Auto — WebDev 2 Upgrade</h2>
+<p class="subtitle">What exists vs. what's needed to hit full marks (10/10)</p>
+
+<div class="section">
+  <h3>Rubric Scorecard — Current State vs. Target</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:0.5rem">
+    <thead>
+      <tr style="background:var(--color-accent);color:white">
+        <th style="padding:10px;text-align:left">Rubric (2pts each)</th>
+        <th style="padding:10px;text-align:center">Current</th>
+        <th style="padding:10px;text-align:center">Target</th>
+        <th style="padding:10px;text-align:left">What's missing</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:var(--color-surface);border-bottom:1px solid var(--color-border)">
+        <td style="padding:10px"><strong>CSS / Responsive</strong></td>
+        <td style="padding:10px;text-align:center">⚠️ 1pt</td>
+        <td style="padding:10px;text-align:center;color:#22c55e">✅ 2pts</td>
+        <td style="padding:10px">Full mobile/tablet/laptop/desktop responsiveness; consistent aesthetic</td>
+      </tr>
+      <tr style="background:var(--color-bg);border-bottom:1px solid var(--color-border)">
+        <td style="padding:10px"><strong>Frontend Architecture</strong></td>
+        <td style="padding:10px;text-align:center">❌ 0pt</td>
+        <td style="padding:10px;text-align:center;color:#22c55e">✅ 2pts</td>
+        <td style="padding:10px"><strong>Vue.js SPA</strong> with Vue Router + Pinia/Vuex state management</td>
+      </tr>
+      <tr style="background:var(--color-surface);border-bottom:1px solid var(--color-border)">
+        <td style="padding:10px"><strong>Backend REST API</strong></td>
+        <td style="padding:10px;text-align:center">⚠️ 1pt</td>
+        <td style="padding:10px;text-align:center;color:#22c55e">✅ 2pts</td>
+        <td style="padding:10px">Pagination on GET endpoints, proper REST naming (no /api/car/delete/id), error messages on all endpoints</td>
+      </tr>
+      <tr style="background:var(--color-bg);border-bottom:1px solid var(--color-border)">
+        <td style="padding:10px"><strong>Authentication (JWT)</strong></td>
+        <td style="padding:10px;text-align:center">❌ 0pt</td>
+        <td style="padding:10px;text-align:center;color:#22c55e">✅ 2pts</td>
+        <td style="padding:10px"><strong>JWT tokens</strong> on login, Bearer token on every request, <strong>role-based access</strong> (admin/employee/client)</td>
+      </tr>
+      <tr style="background:var(--color-surface)">
+        <td style="padding:10px"><strong>Backend Architecture</strong></td>
+        <td style="padding:10px;text-align:center">⚠️ 1pt</td>
+        <td style="padding:10px;text-align:center;color:#22c55e">✅ 2pts</td>
+        <td style="padding:10px">Namespaces, PSR-4 autoloading fully structured, middleware layer</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section" style="margin-top:1.5rem">
+  <h3>Project Structure — New Repo</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+      <div class="label">Backend (PHP)</div>
+      <code style="display:block;font-size:0.8rem;line-height:1.8;white-space:pre">app/
+├── public/          ← entry point
+├── src/
+│   ├── Controllers/ ← namespaced
+│   ├── Models/      ← namespaced
+│   ├── Middleware/  ← JWT auth
+│   └── Routes/      ← clean routing
+└── composer.json    ← PSR-4</code>
+    </div>
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+      <div class="label">Frontend (Vue.js)</div>
+      <code style="display:block;font-size:0.8rem;line-height:1.8;white-space:pre">frontend/
+├── src/
+│   ├── components/  ← reusable
+│   ├── views/       ← pages
+│   ├── router/      ← Vue Router
+│   ├── stores/      ← Pinia state
+│   └── api/         ← Axios calls
+└── package.json</code>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:1.5rem">
+  <h3>User Roles</h3>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+    <div style="background:var(--color-surface);border:2px solid #6366f1;border-radius:8px;padding:1rem">
+      <div class="label" style="color:#6366f1">Admin</div>
+      <ul style="margin:0.5rem 0 0 1rem;font-size:0.85rem">
+        <li>Manage users &amp; roles</li>
+        <li>Full car CRUD</li>
+        <li>All orders/leases</li>
+        <li>Export reports</li>
+      </ul>
+    </div>
+    <div style="background:var(--color-surface);border:2px solid #f59e0b;border-radius:8px;padding:1rem">
+      <div class="label" style="color:#f59e0b">Employee</div>
+      <ul style="margin:0.5rem 0 0 1rem;font-size:0.85rem">
+        <li>Add/edit car listings</li>
+        <li>Process orders</li>
+        <li>Approve/deny leases</li>
+      </ul>
+    </div>
+    <div style="background:var(--color-surface);border:2px solid #22c55e;border-radius:8px;padding:1rem">
+      <div class="label" style="color:#22c55e">Client</div>
+      <ul style="margin:0.5rem 0 0 1rem;font-size:0.85rem">
+        <li>Browse &amp; filter cars</li>
+        <li>Buy or lease a car</li>
+        <li>Track own orders</li>
+        <li>Manage profile</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem">Take a look — then let me know if this overview looks right, or if there's anything you'd add or change.</p>

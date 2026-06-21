@@ -1,0 +1,109 @@
+<h2>Design: Vue Pages & Components</h2>
+<p class="subtitle">What the user sees — routes, views, and which components they use</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+
+  <div>
+    <h3 style="margin-bottom:0.75rem">Public Routes <span style="font-size:0.75rem;color:var(--color-muted);font-weight:normal">(no login needed)</span></h3>
+
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/</code>
+        <span class="label">HomeView.vue</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">Hero banner · Featured cars carousel · New arrivals · Deals of the day</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>Navbar</code> · <code>CarCard</code> · <code>HeroBanner</code> · <code>Footer</code></p>
+    </div>
+
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/cars</code>
+        <span class="label">CarsView.vue</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">Full car listing with sidebar filters + pagination</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>CarFilter</code> · <code>CarCard</code> · <code>Pagination</code></p>
+    </div>
+
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/cars/:id</code>
+        <span class="label">CarDetailView.vue</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">Car photos · specs · Buy / Lease buttons (login required to proceed)</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>CarGallery</code> · <code>OrderModal</code></p>
+    </div>
+
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:0.9rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/login &nbsp; /register</code>
+        <span class="label">LoginView.vue</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">JWT login · client registration · stores token in Pinia auth store</p>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:0.75rem">Protected Routes <span style="font-size:0.75rem;color:var(--color-muted);font-weight:normal">(JWT required — redirect to /login)</span></h3>
+
+    <div style="background:var(--color-surface);border:2px solid #22c55e;border-radius:8px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/dashboard</code>
+        <span class="label" style="color:#22c55e">Client</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">My orders · profile details · order status tracking</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>OrderList</code> · <code>ProfileForm</code></p>
+    </div>
+
+    <div style="background:var(--color-surface);border:2px solid #f59e0b;border-radius:8px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/admin/cars</code>
+        <span class="label" style="color:#f59e0b">Employee+</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">Car listing management — add, edit, delete with image upload</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>CarTable</code> · <code>CarFormModal</code></p>
+    </div>
+
+    <div style="background:var(--color-surface);border:2px solid #f59e0b;border-radius:8px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/admin/orders</code>
+        <span class="label" style="color:#f59e0b">Employee+</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">All orders · approve / deny / mark complete</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>OrderTable</code> · <code>StatusBadge</code></p>
+    </div>
+
+    <div style="background:var(--color-surface);border:2px solid #6366f1;border-radius:8px;padding:0.9rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <code style="color:#60a5fa">/admin/users</code>
+        <span class="label" style="color:#6366f1">Admin only</span>
+      </div>
+      <p style="font-size:0.82rem;margin:0.4rem 0 0">Manage users · assign roles · deactivate accounts</p>
+      <p style="font-size:0.78rem;color:var(--color-muted);margin:0.3rem 0 0">Components: <code>UserTable</code> · <code>RoleBadge</code></p>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:1.2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1rem">
+  <div class="label">Pinia Stores (state management)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem;font-size:0.82rem">
+    <div>
+      <strong>auth.js</strong>
+      <ul style="margin:0.3rem 0 0 1rem">
+        <li>token (persisted to localStorage)</li>
+        <li>user { id, name, email, role }</li>
+        <li>actions: login(), logout(), register()</li>
+        <li>getter: isLoggedIn, isAdmin, isEmployee</li>
+      </ul>
+    </div>
+    <div>
+      <strong>cars.js</strong>
+      <ul style="margin:0.3rem 0 0 1rem">
+        <li>cars[], filters{}, pagination{}</li>
+        <li>actions: fetchCars(), fetchFilters()</li>
+        <li>Router guard checks auth store on every /admin/* route</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:1rem">Does this page structure look right? Confirm in terminal.</p>

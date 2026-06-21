@@ -1,0 +1,42 @@
+<h2>Three Approaches to the Upgrade</h2>
+<p class="subtitle">Same destination — different scopes of change to the PHP backend</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Surgical Upgrade <span style="font-size:0.75rem;color:#f59e0b;margin-left:8px">SAFE</span></h3>
+      <p>Keep existing PHP files, add JWT middleware on top, fix REST naming, add pagination. Vue replaces only the HTML views — PHP controllers stay mostly untouched.</p>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Least risky — existing logic preserved</li><li>Fastest to build</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Tech debt stays</li><li>Mixed namespacing looks sloppy</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Clean Restructure <span style="font-size:0.75rem;color:#22c55e;margin-left:8px">RECOMMENDED</span></h3>
+      <p>Move PHP into a proper <code>src/</code> namespace structure (Controllers, Models, Middleware, Routes). Port existing logic — don't rewrite it. Add JWT, fix REST, add pagination. Vue SPA is a separate <code>frontend/</code> folder built into nginx.</p>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Hits 2pts on backend architecture rubric</li><li>Code looks professional</li><li>Still reuses 80% of existing logic</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>~1 day more work than Option A</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Full Rewrite</h3>
+      <p>Start both backend and frontend from scratch. New PHP framework (Slim/Laravel), new Vue app, everything green-field.</p>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Cleanest result</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Weeks of work</li><li>Risk losing working features</li><li>No benefit over B for the grade</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:1rem">Click your pick, then confirm in the terminal.</p>
